@@ -1,9 +1,9 @@
 import React from "react";
 import "./register.css";
-import { NavLink, useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import { registerAccount } from "../api/AuthenticateApi";
+import {NavLink, useHistory} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {toast} from "react-toastify";
+import {registerAccount} from "../api/AuthenticateApi";
 
 const Register = () => {
   const history = useHistory();
@@ -11,10 +11,10 @@ const Register = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
   } = useForm();
 
-  const onSubmitHandler = (data) => {
+  const onSubmitHandler = data => {
     const result = {
       ...data,
       roleId: "3",
@@ -25,7 +25,9 @@ const Register = () => {
         toast.success("Đăng kí thành công!");
         history.push("/sign-in");
       })
-      .catch((error) => toast.error(error.response.data.Errors));
+      .catch(error => {
+        toast.error(error.response.data.Errors[0]);
+      });
   };
   return (
     <div>
@@ -34,18 +36,10 @@ const Register = () => {
         <div className="container py-5 h-100">
           <div className="row justify-content-center align-items-center h-100">
             <div className="col-12 col-lg-9 col-xl-7">
-              <div
-                className="card bg-dark text-white"
-                style={{ borderRadius: "15px" }}
-              >
+              <div className="card bg-dark text-white" style={{borderRadius: "15px"}}>
                 <div className="card-body p-4 p-md-5">
-                  <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 text-center">
-                    Đăng kí
-                  </h3>
-                  <form
-                    className="needs-validation"
-                    onSubmit={handleSubmit(onSubmitHandler)}
-                  >
+                  <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 text-center">Đăng kí</h3>
+                  <form className="needs-validation" onSubmit={handleSubmit(onSubmitHandler)}>
                     <div className="row">
                       <div className="col-md-6 mb-4">
                         <div className="form-outline">
@@ -126,10 +120,7 @@ const Register = () => {
                               required: true,
                             })}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor="femaleGender"
-                          >
+                          <label className="form-check-label" htmlFor="femaleGender">
                             Nữ
                           </label>
                         </div>
@@ -144,10 +135,7 @@ const Register = () => {
                               required: true,
                             })}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor="maleGender"
-                          >
+                          <label className="form-check-label" htmlFor="maleGender">
                             Nam
                           </label>
                         </div>
@@ -162,8 +150,7 @@ const Register = () => {
                             className="form-control form-control-lg"
                             {...register("email", {
                               required: true,
-                              pattern:
-                                /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                             })}
                           />
                           <label className="form-label" htmlFor="emailAddress">
@@ -206,11 +193,14 @@ const Register = () => {
                           id=""
                           cols="50"
                           rows="5"
-                          {...register("address", { required: false })}
+                          {...register("address", {required: true})}
                         ></textarea>
-                        <label className="form-label select-label">
-                          Địa chỉ
-                        </label>
+                        <label className="form-label select-label">Địa chỉ</label>
+                        {errors.address && (
+                          <div className="alert alert-danger" role="alert">
+                            Địa chỉ không hợp lệ!
+                          </div>
+                        )}
                       </div>
                     </div>
                     <div className="mt-4 pt-2 mb-3">
@@ -221,11 +211,7 @@ const Register = () => {
                     <div>
                       <p className="mb-0">
                         Đã có tài khoản?{" "}
-                        <NavLink
-                          to="/sign-in"
-                          exact
-                          className="text-white-50 fw-bold"
-                        >
+                        <NavLink to="/sign-in" exact className="text-white-50 fw-bold">
                           Đăng nhập ngay
                         </NavLink>
                       </p>
