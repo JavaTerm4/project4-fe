@@ -2,28 +2,25 @@ import addidas from "../static/images/adidas.jpg";
 import nike from "../static/images/nike.jpg";
 import puma from "../static/images/puma.jpg";
 import fila from "../static/images/fila.jpg";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import first from "../static/images/slider_1_image.jpg";
 import second from "../static/images/slider_2_image.jpg";
 import third from "../static/images/slider_4_image.jpg";
 import fourth from "../static/images/slider_5_image.jpg";
-import React, { useState, useEffect } from "react";
-import { getAllProducts } from "../api/ProductApi";
+import React, {useState, useEffect} from "react";
+import {getAllProducts} from "../api/ProductApi";
 
-const Home = (props) => {
+const Home = props => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState({});
   const [active, setActive] = useState(true);
 
   var rows = new Array(total).fill(0).map((zero, index) => (
-    <li
-      className={page === index + 1 ? "page-item active" : "page-item"}
-      key={index}
-    >
+    <li className={page === index + 1 ? "page-item active" : "page-item"} key={index}>
       <button
         className="page-link"
-        style={{ borderRadius: 50 }}
+        style={{borderRadius: 50}}
         onClick={() => onChangePage(index + 1)}
       >
         {index + 1}
@@ -32,16 +29,14 @@ const Home = (props) => {
   ));
 
   useEffect(() => {
-    getAllProducts(page, 12, active).then((response) =>
-      {
-        setProducts(response.data.content);
-        setTotal(response.data.totalPages);
-      }
-    );
+    getAllProducts(page, 12, active).then(response => {
+      setProducts(response.data.content);
+      setTotal(response.data.totalPages);
+    });
     props.changeHeaderHandler(1);
   }, [page]);
 
-  const onChangePage = (page) => {
+  const onChangePage = page => {
     setPage(page);
   };
 
@@ -88,7 +83,7 @@ const Home = (props) => {
       </div>
       <div className="container-fluid padding">
         <div className="row welcome mini-card">
-        <h4 className="title text-primary" >Mới nhất</h4>
+          <h4 className="title text-primary new-product">Mới nhất</h4>
         </div>
       </div>
       <div className="col-11 container-fluid card">
@@ -108,7 +103,7 @@ const Home = (props) => {
                   <NavLink to={`/product-detail/${item.id}`}>
                     <img
                       src={require(`../static/images/${item.image}`)}
-                      style={{ width: 150, height: 150 }}
+                      style={{width: 150, height: 150}}
                       alt="Product"
                       className="mini-card"
                     />
@@ -117,11 +112,7 @@ const Home = (props) => {
                     <div className="d-flex justify-content-between">
                       <div>
                         <p className="h4 text-primary mini-card">
-                          {(
-                            (item.price * (100 - item.discount)) /
-                            100
-                          ).toLocaleString()}{" "}
-                          đ
+                          {((item.price * (100 - item.discount)) / 100).toLocaleString()} đ
                         </p>
                       </div>
                     </div>
@@ -134,10 +125,7 @@ const Home = (props) => {
                     </p>
                     <p className="mb-0">
                       <strong>
-                        <NavLink
-                          to={`/product-detail/${item.id}`}
-                          className="text-secondary "
-                        >
+                        <NavLink to={`/product-detail/${item.id}`} className="text-secondary ">
                           {item.name}
                         </NavLink>
                       </strong>
@@ -159,11 +147,8 @@ const Home = (props) => {
                         </p>
                         <p className="mb-0 small text-danger">
                           <span className="font-weight-bold">Tiết kiệm: </span>{" "}
-                          {(
-                            (item.price * item.discount) /
-                            100
-                          ).toLocaleString()}{" "}
-                          đ ({item.discount}%)
+                          {((item.price * item.discount) / 100).toLocaleString()} đ ({item.discount}
+                          %)
                         </p>
                       </div>
                     </div>
@@ -175,10 +160,7 @@ const Home = (props) => {
                           className="btn btn-outline-primary btn-block"
                         >
                           Thêm vào giỏ
-                          <i
-                            className="fa fa-shopping-basket"
-                            aria-hidden="true"
-                          ></i>
+                          <i className="fa fa-shopping-basket" aria-hidden="true"></i>
                         </NavLink>
                       </div>
                       <div className="ml-2">
@@ -204,7 +186,7 @@ const Home = (props) => {
           <li className={page === 1 ? "page-item disabled" : "page-item"}>
             <button
               className="page-link"
-              style={{ borderRadius: 50 }}
+              style={{borderRadius: 50}}
               onClick={() => onChangePage(1)}
             >
               {`<<`}
@@ -214,7 +196,7 @@ const Home = (props) => {
           <li className={page === total ? "page-item disabled" : "page-item"}>
             <button
               className="page-link"
-              style={{ borderRadius: 50 }}
+              style={{borderRadius: 50}}
               onClick={() => onChangePage(total)}
             >
               {`>>`}

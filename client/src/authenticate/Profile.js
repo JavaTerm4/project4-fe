@@ -1,31 +1,31 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import "./register.css";
-import { useHistory } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { toast } from "react-toastify";
-import {getAccountDetailByAccountId, updatepProfile, getByUsername} from '../api/AccountApi';
+import {useHistory} from "react-router-dom";
+import {useForm} from "react-hook-form";
+import {toast} from "react-toastify";
+import {getAccountDetailByAccountId, updatepProfile, getByUsername} from "../api/AccountApi";
 
-const Profile = (props) => {
+const Profile = props => {
   const history = useHistory();
   const [flag, setFlag] = useState();
 
-  useEffect(() =>{
+  useEffect(() => {
     getAccountDetailByAccountId(props.user.id)
-    .then((res) =>{
-      reset(res.data);
-      setFlag(res.data);
-    })
-    .catch((error) => console.log(error));
+      .then(res => {
+        reset(res.data);
+        setFlag(res.data);
+      })
+      .catch(error => console.log(error));
   }, []);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
-    reset
+    formState: {errors},
+    reset,
   } = useForm();
 
-  const onSubmitHandler = (data) => {
+  const onSubmitHandler = data => {
     const result = {
       ...data,
       id: flag.id,
@@ -36,13 +36,13 @@ const Profile = (props) => {
         toast.success("Cập nhật thông tin thành công!");
         props.refresh(false);
         getByUsername(props.user.username)
-        .then((res) => {
-          props.userHandler(res.data)
-        })
-        .catch((error) => console.log(error))
+          .then(res => {
+            props.userHandler(res.data);
+          })
+          .catch(error => console.log(error));
         history.push("/");
       })
-      .catch((error) => toast.error(error.response.data.Errors));
+      .catch(error => toast.error(error.response.data.Errors));
   };
   return (
     <div>
@@ -51,21 +51,16 @@ const Profile = (props) => {
         <div className="container py-5 h-100">
           <div className="row justify-content-center align-items-center h-100">
             <div className="col-12 col-lg-9 col-xl-7">
-              <div
-                className="card bg-dark text-white"
-                style={{ borderRadius: "15px" }}
-              >
+              <div className="card bg-dark text-white" style={{borderRadius: "15px"}}>
                 <div className="card-body p-4 p-md-5">
-                  <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 text-center">
-                    Thông tin tài khoản
-                  </h3>
-                  <form
-                    className="needs-validation"
-                    onSubmit={handleSubmit(onSubmitHandler)}
-                  >
+                  <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 text-center">Thông tin tài khoản</h3>
+                  <form className="needs-validation" onSubmit={handleSubmit(onSubmitHandler)}>
                     <div className="row">
                       <div className="col-md-12 mb-4 d-flex align-items-center">
                         <div className="form-outline datepicker w-100">
+                          <label htmlFor="birthdayDate" className="form-label">
+                            Họ tên
+                          </label>
                           <input
                             type="text"
                             className="form-control form-control-lg"
@@ -75,9 +70,6 @@ const Profile = (props) => {
                               pattern: /^\s*\S+.*/,
                             })}
                           />
-                          <label htmlFor="birthdayDate" className="form-label">
-                            Họ tên
-                          </label>
                           {errors.fullName && (
                             <div className="alert alert-danger" role="alert">
                               Họ tên không hợp lệ!
@@ -98,10 +90,7 @@ const Profile = (props) => {
                               required: true,
                             })}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor="femaleGender"
-                          >
+                          <label className="form-check-label" htmlFor="femaleGender">
                             Nữ
                           </label>
                         </div>
@@ -116,10 +105,7 @@ const Profile = (props) => {
                               required: true,
                             })}
                           />
-                          <label
-                            className="form-check-label"
-                            htmlFor="maleGender"
-                          >
+                          <label className="form-check-label" htmlFor="maleGender">
                             Nam
                           </label>
                         </div>
@@ -128,19 +114,19 @@ const Profile = (props) => {
                     <div className="row">
                       <div className="col-md-12 mb-4 pb-2">
                         <div className="form-outline">
+                          <label className="form-label" htmlFor="emailAddress">
+                            Email
+                          </label>
                           <input
                             type="text"
                             id="emailAddress"
                             className="form-control form-control-lg"
                             {...register("email", {
                               required: true,
-                              pattern:
-                                /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                              pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
                             })}
                           />
-                          <label className="form-label" htmlFor="emailAddress">
-                            Email
-                          </label>
+
                           {errors.email && (
                             <div className="alert alert-danger" role="alert">
                               Email không hợp lệ!
@@ -150,6 +136,9 @@ const Profile = (props) => {
                       </div>
                       <div className="col-md-12 mb-4 pb-2">
                         <div className="form-outline">
+                          <label className="form-label" htmlFor="phoneNumber">
+                            Số điện thoại
+                          </label>
                           <input
                             type="tel"
                             id="phoneNumber"
@@ -159,9 +148,6 @@ const Profile = (props) => {
                               pattern: /^0[0-9]{9}$/,
                             })}
                           />
-                          <label className="form-label" htmlFor="phoneNumber">
-                            Số điện thoại
-                          </label>
                           {errors.phone && (
                             <div className="alert alert-danger" role="alert">
                               Số điện thoại không hợp lệ!
@@ -170,19 +156,16 @@ const Profile = (props) => {
                         </div>
                       </div>
                     </div>
-
                     <div className="row">
                       <div className="col-12">
+                        <label className="form-label select-label">Địa chỉ</label>
                         <textarea
                           name=""
                           id=""
                           cols="62"
                           rows="5"
-                          {...register("address", { required: false })}
+                          {...register("address", {required: false})}
                         ></textarea>
-                        <label className="form-label select-label">
-                          Địa chỉ
-                        </label>
                       </div>
                     </div>
                     <div className="mt-4 pt-2 mb-3">

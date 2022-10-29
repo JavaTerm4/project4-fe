@@ -106,7 +106,19 @@ hr.light {
 .title {
   font-weight: bolder;
 }
+.title.text-primary.new-product{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
 
+.title.text-danger{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.fa-shopping-basket{
+  margin-left: 6px;
+}
 .card-img-top img {
   width: 300px;
   height: 200px;

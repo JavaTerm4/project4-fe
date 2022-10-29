@@ -26,13 +26,19 @@ const Register = () => {
         history.push("/sign-in");
       })
       .catch(error => {
-        toast.error(error.response.data.Errors[0]);
+        let message;
+        if (typeof error.response.data.Errors == "string") {
+          message = error.response.data.Errors;
+        } else {
+          message = error.response.data.Errors[0];
+        }
+        toast.error(message);
       });
   };
   return (
     <div>
       {" "}
-      <section className="vh-100 gradient-custom">
+      <section className="vh-100 gradient-custom register">
         <div className="container py-5 h-100">
           <div className="row justify-content-center align-items-center h-100">
             <div className="col-12 col-lg-9 col-xl-7">

@@ -29,6 +29,7 @@
     align-items: center;
     font-weight: 600;
     transition: color 0.3s ease 0s;
+    cursor: default;
 }
 
 .sidebar__item-inner > i {

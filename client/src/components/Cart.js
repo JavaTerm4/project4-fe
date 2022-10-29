@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {useHistory} from "react-router-dom";
 import {
   getCartItemByAccountId,
   modifyCartItem,
   removeCartItem,
   isEnoughCartItem,
 } from "../api/CartApi";
-import { toast } from "react-toastify";
+import {toast} from "react-toastify";
 
-const Cart = (props) => {
+const Cart = props => {
   const [cart, setCart] = useState([]);
   const history = useHistory();
 
@@ -18,12 +18,12 @@ const Cart = (props) => {
 
   const onLoad = () => {
     if (props.user) {
-      getCartItemByAccountId(props.user.id).then((resp) => {
-        setCart(resp.data.map((item) => ({ ...item, checked: false })));
+      getCartItemByAccountId(props.user.id).then(resp => {
+        setCart(resp.data.map(item => ({...item, checked: false})));
         props.outStockHandler(resp.data);
       });
     } else {
-      setCart(props.cartItem.map((item) => ({ ...item, checked: false })));
+      setCart(props.cartItem.map(item => ({...item, checked: false})));
       props.outStockHandler(props.cartItem);
     }
     props.clearBuyHandler();
@@ -43,22 +43,18 @@ const Cart = (props) => {
 
         modifyCartItem(data)
           .then(() => onLoad())
-          .catch((error) => toast.warning(error.response.data.Errors));
+          .catch(error => toast.warning(error.response.data.Errors));
       } else {
         isEnoughCartItem(attr, quantity)
           .then(() => {
-            const res = cart.map((item) =>
-              item.id === attr ? { ...item, quantity: quantity } : item
-            );
-            const flag = res.filter((item) => item.quantity > 0);
+            const res = cart.map(item => (item.id === attr ? {...item, quantity: quantity} : item));
+            const flag = res.filter(item => item.quantity > 0);
             setCart(flag);
             props.cartHandler(flag);
           })
-          .catch((error) => {
-            const res = cart.map((item) =>
-              item.id === attr ? { ...item, quantity: 1 } : item
-            );
-            const flag = res.filter((item) => item.quantity > 0);
+          .catch(error => {
+            const res = cart.map(item => (item.id === attr ? {...item, quantity: 1} : item));
+            const flag = res.filter(item => item.quantity > 0);
             setCart(flag);
             props.cartHandler(flag);
             toast.warning(error.response.data.Errors);
@@ -80,18 +76,16 @@ const Cart = (props) => {
 
         modifyCartItem(data)
           .then(() => onLoad())
-          .catch((error) => toast.warning(error.response.data.Errors));
+          .catch(error => toast.warning(error.response.data.Errors));
       } else {
         isEnoughCartItem(attr, quantity)
           .then(() => {
-            const res = cart.map((item) =>
-              item.id === attr ? { ...item, quantity: quantity } : item
-            );
-            const flag = res.filter((item) => item.quantity > 0);
+            const res = cart.map(item => (item.id === attr ? {...item, quantity: quantity} : item));
+            const flag = res.filter(item => item.quantity > 0);
             setCart(flag);
             props.cartHandler(flag);
           })
-          .catch((error) => {
+          .catch(error => {
             toast.warning(error.response.data.Errors);
           });
       }
@@ -108,9 +102,9 @@ const Cart = (props) => {
 
       removeCartItem(data)
         .then(() => onLoad())
-        .catch((error) => toast.warning(error.response.data.Errors));
+        .catch(error => toast.warning(error.response.data.Errors));
     } else {
-      const res = cart.filter((item) => item.id !== attr);
+      const res = cart.filter(item => item.id !== attr);
       setCart(res);
       props.cartHandler(res);
     }
@@ -124,7 +118,7 @@ const Cart = (props) => {
         for (let i = 0; i < cart.length; i++) {
           if (props.buy[j] == cart[i].id) {
             isEnoughCartItem(cart[i].id, cart[i].quantity)
-              .then((resp) => console.log(resp.data))
+              .then(resp => console.log(resp.data))
               .catch(() => history.push("/out-of-stock"));
           }
         }
@@ -133,9 +127,9 @@ const Cart = (props) => {
     }
   };
 
-  const buyHandler = (e) => {
+  const buyHandler = e => {
     const id = e.target.value;
-    const index = cart.findIndex((item) => item.id == id);
+    const index = cart.findIndex(item => item.id == id);
     const flag = cart[index].checked;
     if (flag) {
       cart[index] = {
@@ -152,12 +146,11 @@ const Cart = (props) => {
     }
   };
 
-
   return (
     <div className="col-12">
       <div className="container-fluid mb-5 mt-5">
         <div className="mini-card">
-          <h4 className="text-danger">Giỏ hàng của bạn</h4>
+          <h4 className="text-danger mb-0">Giỏ hàng của bạn</h4>
         </div>
         <div className="">
           <table className="table table-striped table-bordered">
@@ -179,7 +172,7 @@ const Cart = (props) => {
                   <tr key={index}>
                     <th>
                       <input
-                        className="form-check-input ml-1 mt-5"
+                        className="ml-1 mt-5"
                         type="checkbox"
                         value={item.id}
                         id="defaultCheck1"
@@ -189,7 +182,7 @@ const Cart = (props) => {
                     <th>
                       <img
                         className="img-fluid"
-                        style={{ width: "100px", height: "100px" }}
+                        style={{width: "100px", height: "100px"}}
                         src={require(`../static/images/${item.image}`)}
                         alt=""
                       />
@@ -202,20 +195,14 @@ const Cart = (props) => {
                     </td>
                     <td>
                       <h6 className="card-title mt-5 bolder">
-                        {(
-                          (item.price * (100 - item.discount)) /
-                          100
-                        ).toLocaleString()}{" "}
-                        đ
+                        {((item.price * (100 - item.discount)) / 100).toLocaleString()} đ
                       </h6>
                     </td>
                     <td>
                       <div className="mt-5">
                         <button
                           className="btn btn-outline-dark"
-                          onClick={() =>
-                            addCartItemHandler(item.id, item.quantity + 1)
-                          }
+                          onClick={() => addCartItemHandler(item.id, item.quantity + 1)}
                         >
                           +
                         </button>
@@ -223,18 +210,14 @@ const Cart = (props) => {
                           type="number"
                           name="quantity"
                           className="text-center"
-                          style={{ width: "40px" }}
+                          style={{width: "40px"}}
                           value={item.quantity}
-                          onChange={(e) =>
-                            modifyCartItemHandler(item.id, e.target.value)
-                          }
+                          onChange={e => modifyCartItemHandler(item.id, e.target.value)}
                           min={1}
                         />
                         <button
                           className="btn btn-outline-dark"
-                          onClick={() =>
-                            modifyCartItemHandler(item.id, item.quantity - 1)
-                          }
+                          onClick={() => modifyCartItemHandler(item.id, item.quantity - 1)}
                           disabled={item.quantity == 1}
                         >
                           -
@@ -252,16 +235,11 @@ const Cart = (props) => {
                     </td>
                     <td>
                       <button
-                        className="border-0 pl-4"
-                        style={{ backgroundColor: "white" }}
-                        onClick={() =>
-                          removeCartItemHandler(item.id, item.quantity)
-                        }
+                        className="border-0"
+                        style={{backgroundColor: "unset"}}
+                        onClick={() => removeCartItemHandler(item.id, item.quantity)}
                       >
-                        <i
-                          className="fa fa-trash-o mt-5 text-danger"
-                          style={{ fontSize: "24px" }}
-                        />
+                        <i className="fa fa-trash-o mt-5 text-danger" style={{fontSize: "24px"}} />
                       </button>
                     </td>
                   </tr>
@@ -270,10 +248,7 @@ const Cart = (props) => {
           </table>
           <hr className="my-4" />
           <div className="row container-fluid">
-            <button
-              className="btn btn-primary mb-3 btn-lg"
-              onClick={checkOutHandler}
-            >
+            <button className="btn btn-primary mb-3 btn-lg" onClick={checkOutHandler}>
               Mua hàng
             </button>
           </div>
